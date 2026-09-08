@@ -1,0 +1,62 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node *next;
+};
+
+void insertAtBeginning(struct Node **head, int value)
+{
+    struct Node *newNode = malloc(sizeof(struct Node));
+
+    newNode->data = value;
+    newNode->next = *head;
+    *head = newNode;
+}
+
+void insertAtEnd(struct Node **head, int value)
+{
+    struct Node *newNode = malloc(sizeof(struct Node));
+    struct Node *temp;
+
+    newNode->data = value;
+    newNode->next = NULL;
+
+    if (*head == NULL) {
+        *head = newNode;
+        return;
+    }
+
+    temp = *head;
+
+    while (temp->next != NULL) {
+        temp = temp->next;
+    }
+
+    temp->next = newNode;
+}
+
+void display(struct Node *head)
+{
+    while (head != NULL) {
+        printf("%d -> ", head->data);
+        head = head->next;
+    }
+    printf("NULL\n");
+}
+
+int main()
+{
+    struct Node *head = NULL;
+
+    insertAtBeginning(&head, 20);
+    insertAtBeginning(&head, 10);
+
+    insertAtEnd(&head, 30);
+    insertAtEnd(&head, 40);
+
+    display(head);
+
+    return 0;
+}
