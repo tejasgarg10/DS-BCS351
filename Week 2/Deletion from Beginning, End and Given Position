@@ -1,0 +1,151 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node *next;
+};
+
+// Insert at end
+void insertEnd(struct Node **head, int value)
+{
+    struct Node *newNode = malloc(sizeof(struct Node));
+    struct Node *temp;
+
+    newNode->data = value;
+    newNode->next = NULL;
+
+    if (*head == NULL) {
+        *head = newNode;
+        return;
+    }
+
+    temp = *head;
+
+    while (temp->next != NULL) {
+        temp = temp->next;
+    }
+
+    temp->next = newNode;
+}
+
+// Delete from beginning
+void deleteBeginning(struct Node **head)
+{
+    struct Node *temp;
+
+    if (*head == NULL) {
+        printf("List is empty!\n");
+        return;
+    }
+
+    temp = *head;
+    *head = (*head)->next;
+
+    free(temp);
+}
+
+// Delete from end
+void deleteEnd(struct Node **head)
+{
+    struct Node *temp;
+    struct Node *prev;
+
+    if (*head == NULL) {
+        printf("List is empty!\n");
+        return;
+    }
+
+    if ((*head)->next == NULL) {
+        free(*head);
+        *head = NULL;
+        return;
+    }
+
+    temp = *head;
+
+    while (temp->next != NULL) {
+        prev = temp;
+        temp = temp->next;
+    }
+
+    prev->next = NULL;
+    free(temp);
+}
+
+// Delete from given position
+void deletePosition(struct Node **head, int position)
+{
+    struct Node *temp;
+    struct Node *prev;
+    int i;
+
+    if (*head == NULL) {
+        printf("List is empty!\n");
+        return;
+    }
+
+    if (position <= 0) {
+        printf("Invalid position!\n");
+        return;
+    }
+
+    // Position 1 means first node
+    if (position == 1) {
+        deleteBeginning(head);
+        return;
+    }
+
+    temp = *head;
+
+    for (i = 1; i < position && temp != NULL; i++) {
+        prev = temp;
+        temp = temp->next;
+    }
+
+    if (temp == NULL) {
+        printf("Invalid position!\n");
+        return;
+    }
+
+    prev->next = temp->next;
+    free(temp);
+}
+
+// Display list
+void display(struct Node *head)
+{
+    while (head != NULL) {
+        printf("%d -> ", head->data);
+        head = head->next;
+    }
+
+    printf("NULL\n");
+}
+
+int main()
+{
+    struct Node *head = NULL;
+
+    insertEnd(&head, 10);
+    insertEnd(&head, 20);
+    insertEnd(&head, 30);
+    insertEnd(&head, 40);
+
+    printf("Original List: ");
+    display(head);
+
+    deleteBeginning(&head);
+    printf("After deleting beginning: ");
+    display(head);
+
+    deleteEnd(&head);
+    printf("After deleting end: ");
+    display(head);
+
+    deletePosition(&head, 2);
+    printf("After deleting position 2: ");
+    display(head);
+
+    return 0;
+}
