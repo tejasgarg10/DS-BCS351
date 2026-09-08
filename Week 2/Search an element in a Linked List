@@ -1,0 +1,68 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node *next;
+};
+
+void insertEnd(struct Node **head, int value)
+{
+    struct Node *newNode = malloc(sizeof(struct Node));
+    struct Node *temp;
+
+    newNode->data = value;
+    newNode->next = NULL;
+
+    if (*head == NULL) {
+        *head = newNode;
+        return;
+    }
+
+    temp = *head;
+
+    while (temp->next != NULL) {
+        temp = temp->next;
+    }
+
+    temp->next = newNode;
+}
+
+int search(struct Node *head, int key)
+{
+    int position = 1;
+
+    while (head != NULL) {
+        if (head->data == key) {
+            return position;
+        }
+
+        head = head->next;
+        position++;
+    }
+
+    return -1;
+}
+
+int main()
+{
+    struct Node *head = NULL;
+    int key, position;
+
+    insertEnd(&head, 10);
+    insertEnd(&head, 20);
+    insertEnd(&head, 30);
+    insertEnd(&head, 40);
+
+    printf("Enter element to search: ");
+    scanf("%d", &key);
+
+    position = search(head, key);
+
+    if (position != -1)
+        printf("Element %d found at position %d\n", key, position);
+    else
+        printf("Element %d not found in the list\n", key);
+
+    return 0;
+}
