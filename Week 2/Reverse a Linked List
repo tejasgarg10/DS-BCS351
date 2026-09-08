@@ -1,0 +1,78 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node *next;
+};
+
+// Insert node at end
+void insertEnd(struct Node **head, int value)
+{
+    struct Node *newNode = malloc(sizeof(struct Node));
+    struct Node *temp;
+
+    newNode->data = value;
+    newNode->next = NULL;
+
+    if (*head == NULL) {
+        *head = newNode;
+        return;
+    }
+
+    temp = *head;
+
+    while (temp->next != NULL) {
+        temp = temp->next;
+    }
+
+    temp->next = newNode;
+}
+
+// Display list
+void display(struct Node *head)
+{
+    while (head != NULL) {
+        printf("%d -> ", head->data);
+        head = head->next;
+    }
+
+    printf("NULL\n");
+}
+
+// Reverse linked list
+void reverseList(struct Node **head)
+{
+    struct Node *prev = NULL;
+    struct Node *current = *head;
+    struct Node *next = NULL;
+
+    while (current != NULL) {
+        next = current->next;
+        current->next = prev;
+        prev = current;
+        current = next;
+    }
+
+    *head = prev;
+}
+
+int main()
+{
+    struct Node *head = NULL;
+
+    insertEnd(&head, 10);
+    insertEnd(&head, 20);
+    insertEnd(&head, 30);
+    insertEnd(&head, 40);
+
+    printf("Original List: ");
+    display(head);
+
+    reverseList(&head);
+
+    printf("Reversed List: ");
+    display(head);
+
+    return 0;
+}
